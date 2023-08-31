@@ -57,6 +57,7 @@ const leftCheckKeys = computed(() => {
 const toLeftDisabled = computed(() => {
   return (rightData.value && rightData.value?.length === 0) || (rightCheckKeys.value && rightCheckKeys.value.length === 0)
 })
+
 const transferToLeft = () => {
   leftData.value = JSON.parse(JSON.stringify(rightCheckedValue.value.nodes))
 }
