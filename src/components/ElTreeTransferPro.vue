@@ -14,11 +14,6 @@ import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import { computed, ref, watch } from 'vue'
 import ElTreeTransferSelect from './ElTreeTransferSelect.vue'
 
-interface CheckedValue {
-  keys: Array<Number>,
-  nodes: Array<any>
-}
-
 const props = defineProps({
   dataSource: {
     type: Array<any>,
@@ -55,7 +50,7 @@ const leftTitle = computed(() => {
 })
 const leftData = ref([])
 const leftRemove = ref(false)
-const leftCheckedValue = ref<CheckedValue | null>()
+const leftCheckedValue = ref<any>(null)
 const leftCheckedKeys = computed(() => {
   return leftCheckedValue?.value?.keys ?? []
 })
@@ -69,7 +64,10 @@ const transferToLeft = () => {
   rightRemove.value = true
   leftData.value = JSON.parse(JSON.stringify(rightCheckedValue?.value?.nodes))
   setTimeout(() => {
-    rightCheckedValue.value = null
+    rightCheckedValue.value = {
+      keys: [],
+      nodes: []
+    }
     rightRemove.value = false
   }, 1)
 }
@@ -79,7 +77,7 @@ const rightTitle = computed(() => {
 })
 const rightData = ref([])
 const rightRemove = ref(false)
-const rightCheckedValue = ref<CheckedValue | null>()
+const rightCheckedValue = ref<any>(null)
 const rightCheckedKeys = computed(() => {
   return rightCheckedValue?.value?.keys ?? []
 })
