@@ -1,9 +1,14 @@
 <template>
   <div class="container">
-    <div class="title">
-      <el-checkbox v-model="checkAll" @change="checkAllClick" :disabled="checkAllDisabled" :indeterminate="isIndeterminate" />
-      <el-text>{{ title }}</el-text>
-      <el-text class="total">{{ checkedLength }}/{{ treeLength }}</el-text>
+    <div class="checkbox-container">
+      <el-checkbox v-model="checkAll" @change="checkAllClick" :disabled="checkAllDisabled" :indeterminate="isIndeterminate">
+        <el-text class="title">{{ title }}</el-text>
+        <el-text class="statistic">
+          <el-text class="checked">{{ checkedLength }}</el-text>
+          <el-text class="delimiter">/</el-text>
+          <el-text class="total">{{ treeLength }}</el-text>
+        </el-text>
+      </el-checkbox>
     </div>
     <div class="tree-container">
       <el-tree ref="elTreeRef" :default-expand-all="defaultExpandAll" :data="treeData" :node-key="nodeKey" :props="defaultProps" show-checkbox

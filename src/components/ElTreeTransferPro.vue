@@ -100,7 +100,6 @@ const transferToRight = () => {
 watch(() => props.dataSource, (newDataSource) => {
   leftData.value = JSON.parse(JSON.stringify(newDataSource))
 }, { immediate: true })
-
 </script>
 
 <style lang="scss" scoped>
