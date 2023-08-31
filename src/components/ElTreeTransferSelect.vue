@@ -52,9 +52,9 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue'])
 
-const elTreeRef = ref(null)
+const elTreeRef = ref(ElTree)
 
-const treeKeys = ref([])
+const treeKeys = ref<any[]>([])
 const treeLength = computed(() => {
   return treeKeys.value.length
 })
