@@ -6,7 +6,7 @@
       <el-text class="total">{{ checkedLength }}/{{ treeLength }}</el-text>
     </div>
     <div class="tree-container">
-      <el-tree ref="elTreeRef" :data="data" :node-key="nodeKey" :props="defaultProps" show-checkbox
+      <el-tree ref="elTreeRef" :data="treeData" :node-key="nodeKey" :props="defaultProps" show-checkbox
                @check="updateCheckedKeys" />
     </div>
   </div>
@@ -54,6 +54,7 @@ const emits = defineEmits(['update:modelValue'])
 
 const elTreeRef = ref(ElTree)
 
+const treeData = ref<any[]>([])
 const treeItems = ref<any[]>([])
 const treeLength = computed(() => {
   return treeItems.value.length
@@ -73,11 +74,19 @@ const setCheckAll = (checked: boolean) => {
   checkAll.value = checked
 }
 
-const setTreeKeys = (trees: any[]) => {
-  for (const tree of trees) {
-    treeItems.value.push(tree)
-    if (tree[props.defaultProps?.children]) {
-      setTreeKeys(tree[props.defaultProps?.children])
+const addTreeItem = (item: any) => {
+  treeItems.value.push(item)
+}
+
+const clearTreeItem = () => {
+  treeItems.value = []
+}
+
+const addTreeItems = (treeArr: any[]) => {
+  for (const item of treeArr) {
+    addTreeItem(item)
+    if (item[props.defaultProps?.children]) {
+      addTreeItems(item[props.defaultProps?.children])
     }
   }
 }
@@ -104,11 +113,18 @@ watch(checkedLength, (newCheckedLength) => {
 })
 
 watch(() => props.data, (newData) => {
-  setTreeKeys(newData)
+  clearTreeItem()
+  newData?.forEach((node) => {
+    if (!elTreeRef.value.getNode(node[props.nodeKey])) {
+      elTreeRef.value.append(node, node[props.pidKey])
+    }
+  })
+  addTreeItems(treeData.value)
 })
 
 onMounted(() => {
-  setTreeKeys(props.data)
+  treeData.value = props.data
+  addTreeItems(props.data)
 })
 </script>
 

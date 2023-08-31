@@ -80,7 +80,8 @@ const toRightDisabled = computed(() => {
   return (leftData.value && leftData.value?.length === 0) || (leftCheckKeys.value && leftCheckKeys.value.length === 0)
 })
 const transferToRight = () => {
-  rightData.value = JSON.parse(JSON.stringify(leftCheckedValue?.value.nodes))
+  console.debug('transferToRight', leftCheckedValue?.value?.nodes)
+  rightData.value = JSON.parse(JSON.stringify(leftCheckedValue?.value?.nodes))
 }
 
 watch(() => props.dataSource, (newDataSource) => {
