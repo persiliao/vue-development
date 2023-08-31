@@ -54,9 +54,9 @@ const emits = defineEmits(['update:modelValue'])
 
 const elTreeRef = ref(ElTree)
 
-const treeKeys = ref<any[]>([])
+const treeItems = ref<any[]>([])
 const treeLength = computed(() => {
-  return treeKeys.value.length
+  return treeItems.value.length
 })
 
 const checkAll = ref(false)
@@ -75,7 +75,7 @@ const setCheckAll = (checked: boolean) => {
 
 const setTreeKeys = (trees: any[]) => {
   for (const tree of trees) {
-    treeKeys.value.push(tree)
+    treeItems.value.push(tree)
     if (tree[props.defaultProps?.children]) {
       setTreeKeys(tree[props.defaultProps?.children])
     }
