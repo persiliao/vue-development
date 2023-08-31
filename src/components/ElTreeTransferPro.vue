@@ -1,11 +1,11 @@
 <template>
   <div class="tree-transfer-container">
-    <el-tree-transfer-select :data="leftData" :node-key="nodeKey" :pid-key="pidKey" :title="leftTitle" v-model="leftCheckedValue" />
+    <el-tree-transfer-select :remove="leftRemove" :data="leftData" :node-key="nodeKey" :pid-key="pidKey" :title="leftTitle" v-model="leftCheckedValue" />
     <div class="transfer-button">
       <el-button :disabled="toLeftDisabled" :icon="ArrowLeft" type="primary" @click="transferToLeft"></el-button>
       <el-button :disabled="toRightDisabled" :icon="ArrowRight" type="primary" @click="transferToRight"></el-button>
     </div>
-    <el-tree-transfer-select :data="rightData" :node-key="nodeKey" :pid-key="pidKey" :title="rightTitle" v-model="rightCheckedValue" />
+    <el-tree-transfer-select :remove="rightRemove" :data="rightData" :node-key="nodeKey" :pid-key="pidKey" :title="rightTitle" v-model="rightCheckedValue" />
   </div>
 </template>
 
@@ -54,34 +54,47 @@ const leftTitle = computed(() => {
   return props.titles[0]
 })
 const leftData = ref([])
-const leftCheckedValue = ref<CheckedValue>()
-const leftCheckKeys = computed(() => {
-  return leftCheckedValue.value?.keys ?? []
+const leftRemove = ref(false)
+const leftCheckedValue = ref<CheckedValue | null>()
+const leftCheckedKeys = computed(() => {
+  return leftCheckedValue?.value?.keys ?? []
 })
 
 const toLeftDisabled = computed(() => {
-  return (rightData.value && rightData.value?.length === 0) || (rightCheckKeys.value && rightCheckKeys.value.length === 0)
+  return (rightData.value && rightData.value?.length === 0) || (rightCheckedKeys.value && rightCheckedKeys.value.length === 0)
 })
 
 const transferToLeft = () => {
+  leftRemove.value = false
+  rightRemove.value = true
   leftData.value = JSON.parse(JSON.stringify(rightCheckedValue?.value?.nodes))
+  setTimeout(() => {
+    rightCheckedValue.value = null
+    rightRemove.value = false
+  }, 1)
 }
 
 const rightTitle = computed(() => {
   return props.titles[1]
 })
 const rightData = ref([])
-const rightCheckedValue = ref<CheckedValue>()
-const rightCheckKeys = computed(() => {
-  return rightCheckedValue.value?.keys ?? []
+const rightRemove = ref(false)
+const rightCheckedValue = ref<CheckedValue | null>()
+const rightCheckedKeys = computed(() => {
+  return rightCheckedValue?.value?.keys ?? []
 })
 
 const toRightDisabled = computed(() => {
-  return (leftData.value && leftData.value?.length === 0) || (leftCheckKeys.value && leftCheckKeys.value.length === 0)
+  return (leftData.value && leftData.value?.length === 0) || (leftCheckedKeys.value && leftCheckedKeys.value.length === 0)
 })
 const transferToRight = () => {
-  console.debug('transferToRight', leftCheckedValue?.value?.nodes)
+  rightRemove.value = false
+  leftRemove.value = true
   rightData.value = JSON.parse(JSON.stringify(leftCheckedValue?.value?.nodes))
+  setTimeout(() => {
+    leftCheckedValue.value = null
+    leftRemove.value = false
+  }, 1)
 }
 
 watch(() => props.dataSource, (newDataSource) => {

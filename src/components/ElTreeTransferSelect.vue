@@ -22,14 +22,15 @@ const props = defineProps({
     type: String,
     required: true
   },
-  isIndeterminate: {
-    type: Boolean,
-    default: false
-  },
   data: {
     type: Array<any>,
     required: true,
     default: []
+  },
+  remove: {
+    type: Boolean,
+    required: true,
+    default: false
   },
   defaultProps: {
     type: Object,
@@ -47,6 +48,10 @@ const props = defineProps({
   pidKey: {
     type: String,
     default: 'pid'
+  },
+  isIndeterminate: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -65,10 +70,14 @@ const checkAllDisabled = computed(() => {
   return treeLength.value === 0
 })
 
-const checkedKeys = ref([])
+const checkedItems = ref([])
 const checkedLength = computed(() => {
-  return checkedKeys.value.length
+  return checkedItems.value.length
 })
+
+const clearCheckedItems = () => {
+  checkedItems.value = []
+}
 
 const setCheckAll = (checked: boolean) => {
   checkAll.value = checked
@@ -78,23 +87,22 @@ const addTreeItem = (item: any) => {
   treeItems.value.push(item)
 }
 
-const clearTreeItem = () => {
-  treeItems.value = []
-}
-
-const addTreeItems = (treeArr: any[]) => {
+const setTreeItems = (treeArr: any[], clear: boolean = true) => {
+  if (clear) {
+    treeItems.value = []
+  }
   for (const item of treeArr) {
     addTreeItem(item)
     if (item[props.defaultProps?.children]) {
-      addTreeItems(item[props.defaultProps?.children])
+      setTreeItems(item[props.defaultProps?.children], false)
     }
   }
 }
 
 const updateCheckedKeys = () => {
-  checkedKeys.value = elTreeRef.value.getCheckedKeys(false, true)
+  checkedItems.value = elTreeRef.value.getCheckedKeys(false, true)
   emits('update:modelValue', {
-    keys: checkedKeys.value,
+    keys: checkedItems.value,
     nodes: elTreeRef.value.getCheckedNodes(false)
   })
 }
@@ -109,22 +117,31 @@ const checkboxClick = (checked: boolean) => {
 }
 
 watch(checkedLength, (newCheckedLength) => {
-  setCheckAll(treeLength.value === newCheckedLength)
+  setCheckAll(newCheckedLength !== 0 && treeLength.value === newCheckedLength)
 })
 
+watch(() => props.remove, (newRemove) => {
+  if (newRemove) {
+    elTreeRef.value.getCheckedNodes().forEach((node: any) => {
+      elTreeRef.value.remove(node)
+    })
+    clearCheckedItems()
+    setTreeItems(treeData.value, true)
+  }
+}, { immediate: true })
+
 watch(() => props.data, (newData) => {
-  clearTreeItem()
-  newData?.forEach((node) => {
+  newData?.forEach((node: any) => {
     if (!elTreeRef.value.getNode(node[props.nodeKey])) {
       elTreeRef.value.append(node, node[props.pidKey])
     }
   })
-  addTreeItems(treeData.value)
+  setTreeItems(treeData.value, true)
 })
 
 onMounted(() => {
   treeData.value = props.data
-  addTreeItems(props.data)
+  setTreeItems(props.data)
 })
 </script>
 
