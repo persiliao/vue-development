@@ -1,18 +1,28 @@
 <template>
   <div class="container">
     <div class="checkbox-container">
-      <el-checkbox v-model="checkAll" @change="checkAllClick" :disabled="checkAllDisabled" :indeterminate="isIndeterminate">
+      <el-checkbox
+          v-model="checkAll"
+          @change="checkAllClick"
+          :disabled="checkAllDisabled"
+          :indeterminate="isIndeterminate">
         <el-text class="title">{{ title }}</el-text>
-        <el-text class="statistic">
-          <el-text class="checked">{{ checkedLength }}</el-text>
-          <el-text class="delimiter">/</el-text>
-          <el-text class="total">{{ treeLength }}</el-text>
-        </el-text>
       </el-checkbox>
+      <el-text class="statistic">
+        <el-text class="checked">{{ checkedLength }}</el-text>
+        <el-text class="delimiter">/</el-text>
+        <el-text class="total">{{ treeLength }}</el-text>
+      </el-text>
     </div>
     <div class="tree-container">
-      <el-tree ref="elTreeRef" :default-expand-all="defaultExpandAll" :data="treeData" :node-key="nodeKey" :props="defaultProps" show-checkbox
-               @check="updateCheckedKeys" />
+      <el-tree
+          ref="elTreeRef"
+          :default-expand-all="defaultExpandAll"
+          :data="treeData"
+          :node-key="nodeKey"
+          :props="defaultProps"
+          show-checkbox
+          @check="updateCheckedItems" />
     </div>
   </div>
 </template>
@@ -108,7 +118,7 @@ const setTreeItems = (treeArr: any[], clear: boolean = true) => {
   }
 }
 
-const updateCheckedKeys = () => {
+const updateCheckedItems = () => {
   checkedItems.value = elTreeRef.value.getCheckedKeys(false, true)
   emits('update:modelValue', {
     keys: checkedItems.value,
@@ -122,7 +132,7 @@ const checkAllClick = (checked: boolean) => {
   } else {
     elTreeRef.value.setCheckedNodes([])
   }
-  updateCheckedKeys()
+  updateCheckedItems()
 }
 
 watch(checkedLength, (newCheckedLength) => {
@@ -157,5 +167,20 @@ onMounted(() => {
 <style lang="scss" scoped>
 .container {
   width: 100%;
+  height: 100%;
+  border-radius: var(--el-border-radius-base);
+  background-color: var(--el-bg-color);
+  border: var(--el-border-width) var(--el-border-style) var(--el-border-color);
+  
+  .checkbox-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    border-bottom: var(--el-border-width) var(--el-border-style) var(--el-border-color);
+  }
+  
+  .tree-container {
+    padding: 0.6rem;
+  }
 }
 </style>
