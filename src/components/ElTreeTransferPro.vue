@@ -1,9 +1,11 @@
 <template>
   <div class="tree-transfer-container">
     <el-tree-transfer-select :remove="leftRemove" :data="leftData" :node-key="nodeKey" :pid-key="pidKey" :title="leftTitle" v-model="leftCheckedValue" />
-    <div class="transfer-button">
-      <el-button :disabled="toLeftDisabled" :icon="ArrowLeft" type="primary" @click="transferToLeft"></el-button>
-      <el-button :disabled="toRightDisabled" :icon="ArrowRight" type="primary" @click="transferToRight"></el-button>
+    <div class="transfer-button-container">
+      <div>
+        <el-button :disabled="toLeftDisabled" :icon="ArrowLeft" type="primary" @click="transferToLeft" />
+        <el-button :disabled="toRightDisabled" :icon="ArrowRight" type="primary" @click="transferToRight" />
+      </div>
     </div>
     <el-tree-transfer-select :remove="rightRemove" :data="rightData" :node-key="nodeKey" :pid-key="pidKey" :title="rightTitle" v-model="rightCheckedValue" />
   </div>
@@ -105,6 +107,15 @@ watch(() => props.dataSource, (newDataSource) => {
 .tree-transfer-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  height: 100%;
+  
+  .transfer-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
 }
 </style>
