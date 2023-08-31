@@ -51,7 +51,7 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue'])
 
 const leftTitle = computed(() => {
-  return props.titles[0]
+  return props.titles[0] ?? ''
 })
 const leftData = ref([])
 const leftRemove = ref(false)
@@ -75,7 +75,7 @@ const transferToLeft = () => {
 }
 
 const rightTitle = computed(() => {
-  return props.titles[1]
+  return props.titles[1] ?? ''
 })
 const rightData = ref([])
 const rightRemove = ref(false)

@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <div class="title">
-      <el-checkbox v-model="checkAll" @change="checkboxClick" :disabled="checkAllDisabled" :indeterminate="isIndeterminate" />
+      <el-checkbox v-model="checkAll" @change="checkAllClick" :disabled="checkAllDisabled" :indeterminate="isIndeterminate" />
       <el-text>{{ title }}</el-text>
       <el-text class="total">{{ checkedLength }}/{{ treeLength }}</el-text>
     </div>
     <div class="tree-container">
-      <el-tree ref="elTreeRef" :data="treeData" :node-key="nodeKey" :props="defaultProps" show-checkbox
+      <el-tree ref="elTreeRef" :default-expand-all="defaultExpandAll" :data="treeData" :node-key="nodeKey" :props="defaultProps" show-checkbox
                @check="updateCheckedKeys" />
     </div>
   </div>
@@ -48,6 +48,10 @@ const props = defineProps({
   pidKey: {
     type: String,
     default: 'pid'
+  },
+  defaultExpandAll: {
+    type: Boolean,
+    default: true
   },
   isIndeterminate: {
     type: Boolean,
@@ -107,7 +111,7 @@ const updateCheckedKeys = () => {
   })
 }
 
-const checkboxClick = (checked: boolean) => {
+const checkAllClick = (checked: boolean) => {
   if (checked) {
     elTreeRef.value.setCheckedNodes(props.data)
   } else {
