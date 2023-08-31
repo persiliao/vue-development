@@ -14,6 +14,11 @@ import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import { computed, ref, watch } from 'vue'
 import ElTreeTransferSelect from './ElTreeTransferSelect.vue'
 
+interface CheckedValue {
+  keys: Array<Number>,
+  nodes: Array<any>
+}
+
 const props = defineProps({
   dataSource: {
     type: Array<any>,
@@ -38,7 +43,7 @@ const props = defineProps({
     default: 'pid'
   },
   titles: {
-    type: Array<String>,
+    type: Array<string>,
     default: ['待选', '已选']
   }
 })
@@ -49,7 +54,7 @@ const leftTitle = computed(() => {
   return props.titles[0]
 })
 const leftData = ref([])
-const leftCheckedValue = ref(null)
+const leftCheckedValue = ref<CheckedValue>()
 const leftCheckKeys = computed(() => {
   return leftCheckedValue.value?.keys ?? []
 })
@@ -59,14 +64,14 @@ const toLeftDisabled = computed(() => {
 })
 
 const transferToLeft = () => {
-  leftData.value = JSON.parse(JSON.stringify(rightCheckedValue.value.nodes))
+  leftData.value = JSON.parse(JSON.stringify(rightCheckedValue?.value?.nodes))
 }
 
 const rightTitle = computed(() => {
   return props.titles[1]
 })
 const rightData = ref([])
-const rightCheckedValue = ref(null)
+const rightCheckedValue = ref<CheckedValue>()
 const rightCheckKeys = computed(() => {
   return rightCheckedValue.value?.keys ?? []
 })
@@ -75,7 +80,7 @@ const toRightDisabled = computed(() => {
   return (leftData.value && leftData.value?.length === 0) || (leftCheckKeys.value && leftCheckKeys.value.length === 0)
 })
 const transferToRight = () => {
-  rightData.value = JSON.parse(JSON.stringify(leftCheckedValue.value.nodes))
+  rightData.value = JSON.parse(JSON.stringify(leftCheckedValue?.value.nodes))
 }
 
 watch(() => props.dataSource, (newDataSource) => {
