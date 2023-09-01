@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "el-tree-transfer-pro": "link:/Volumes/Workspace/Github/PersiLiao/el-tree-transfer-pro",
     "element-plus": "^2.3.12",
     "pinia": "^2.1.6",
     "vue": "^3.3.4",

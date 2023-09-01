@@ -3,7 +3,6 @@
 </template>
 
 <script setup lang="ts">
-// import ElTreeTransferPro from "@/components/ElTreeTransferPro.vue"
 import ElTreeTransferPro from "el-tree-transfer-pro"
 import { ref } from 'vue'
 
@@ -11,7 +10,6 @@ const data = ref([
   {
     id: 1,
     label: 'Level one 1',
-    pid: 0,
     children: [
       {
         id: 4,
@@ -34,7 +32,6 @@ const data = ref([
   },
   {
     id: 2,
-    pid: 0,
     label: 'Level one 2',
     children: [
       {
@@ -51,7 +48,6 @@ const data = ref([
   },
   {
     id: 3,
-    pid: 0,
     label: 'Level one 3',
     children: [
       {

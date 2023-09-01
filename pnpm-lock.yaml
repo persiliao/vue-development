@@ -8,6 +8,9 @@ dependencies:
   '@element-plus/icons-vue':
     specifier: ^2.1.0
     version: 2.1.0(vue@3.3.4)
+  el-tree-transfer-pro:
+    specifier: link:/Volumes/Workspace/Github/PersiLiao/el-tree-transfer-pro
+    version: link:../../../Github/PersiLiao/el-tree-transfer-pro
   element-plus:
     specifier: ^2.3.12
     version: 2.3.12(vue@3.3.4)
