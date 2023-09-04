@@ -1,11 +1,29 @@
 <template>
-  <el-tree-transfer-pro :data-source="data" />
+  <el-tree-transfer-pro
+      v-model="value"
+      :data="data"
+      :children-is-empty="true"
+      :show-filter="true"
+      :node-props="defaultProps"
+  />
 </template>
 
-<script setup lang="ts">
-// import ElTreeTransferPro from "@/components/ElTreeTransferPro.vue"
+<script setup>
 import ElTreeTransferPro from "el-tree-transfer-pro"
-import { ref } from 'vue'
+import {ref, watch} from 'vue'
+
+const defaultProps = ref({
+  label: 'label',
+  children: 'children',
+  value: 'id',
+  disabled: 'disabled'
+})
+
+const value = ref([])
+
+watch(value, (newValue) => {
+  console.log('el-tree-transfer-pro', newValue)
+})
 
 const data = ref([
   {
@@ -68,7 +86,3 @@ const data = ref([
   }
 ])
 </script>
-
-<style scoped>
-
-</style>
